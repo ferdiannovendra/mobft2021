@@ -32,12 +32,40 @@ class HomeController extends Controller
         // $users = User::where('id', '!=', Auth::id())->get();
 
         // count how many message are unread from the selected user
-        $users = DB::select("select users.id, users.name, users.avatar, users.email, count(is_read) as unread 
-        from users LEFT  JOIN  messages ON users.id = messages.from and is_read = 0 and messages.to = " . Auth::id() . "
-        where users.id != " . Auth::id() . " 
-        group by users.id, users.name, users.avatar, users.email");
+        // $user_status = DB::select("select status from users where status =35")->dump();
+        $user_status = DB::table('users')
+        ->select('status')
+        ->where('id', '=', Auth::id())
+        // ->where('status', '=', 'panitia')
+        ->get();
+        $stat ="";
+        $users = DB::select("select users.id, users.name, users.avatar, users.email, count(is_read) as unread
+            from users LEFT  JOIN  messages ON users.id = messages.from and is_read = 0 and messages.to = " . Auth::id() . "
+            where users.id != " . Auth::id() . "
+            group by users.id, users.name, users.avatar, users.email");
+        $panitia = DB::select("select users.id, users.name, users.avatar, users.email, count(is_read) as unread
+            from users LEFT  JOIN  messages ON users.id = messages.from and is_read = 0 and messages.to = " . Auth::id() . "
+            where users.id != " . Auth::id() . " and status = 'panitia'
+            group by users.id, users.name, users.avatar, users.email");
+        // if ($user_status->status = 'maharu') {
+        //     $stat = "ini maharu";
 
-        return view('home', ['users' => $users]);
+        // }else{
+        //     $stat = "ini panit";
+        //     $users = DB::select("select users.id, users.name, users.avatar, users.email, count(is_read) as unread
+        //     from users LEFT  JOIN  messages ON users.id = messages.from and is_read = 0 and messages.to = " . Auth::id() . "
+        //     where users.id != " . Auth::id() . "
+        //     group by users.id, users.name, users.avatar, users.email");
+        // }
+
+        // and status = 'panitia'
+
+        // $users = DB::select("select users.id, users.name, users.avatar, users.email, count(is_read) as unread
+        // from users LEFT  JOIN  messages ON users.id = messages.from and is_read = 0 and messages.to = " . Auth::id() . "
+        // where users.id != " . Auth::id() . "and status = 'panitia'
+        // group by users.id, users.name, users.avatar, users.email");
+
+        return view('home', ['users' => $users, 'status' => $user_status, 'panitia' => $panitia]);
     }
 
     public function getMessage($user_id)
@@ -72,7 +100,7 @@ class HomeController extends Controller
 
         // pusher
         $options = array(
-            'cluster' => 'ap2',
+            'cluster' => 'ap1',
             'useTLS' => true
         );
 
