@@ -28,6 +28,6 @@ Route::post('resetpassword', 'UserController@resetpassword')->name('resetpasswor
 
 
 //Route untuk chat
-Route::get('/ask', 'ChatController@index')->name('home')->middleware('auth');;
+Route::get('/ask', 'ChatController@index')->name('chat')->middleware('auth');;
 Route::get('/message/{id}', 'ChatController@getMessage')->name('message')->middleware('auth');;
 Route::post('message', 'ChatController@sendMessage')->middleware('auth');;

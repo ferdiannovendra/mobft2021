@@ -37,6 +37,7 @@
                     @endforeach
                 </div>
             </div>
+            <a href="{{ route('chat') }}"><button type="button" class="btn btn-warning btn-lg btn-block">Chat Yuk!</button></a>
         </div>
     </div>
 </div>

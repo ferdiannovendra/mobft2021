@@ -5,9 +5,8 @@
         <div class="row">
             <div class="col-md-4">
                 <div class="user-wrapper">
-                @foreach($status as $stat)
-                {{ $stat->status }}
-                    @if($stat->status == 'panitia')
+                {{ Auth::user()->status }}
+                    @if(Auth::user()->status == 'panitia')
                         <ul class="users">
                                 @foreach($users as $user)
                                     <li class="user" id="{{ $user->id }}">
@@ -18,7 +17,7 @@
 
                                         <div class="media">
                                             <div class="media-left">
-                                                <img src="{{ $user->avatar }}" alt="" class="media-object">
+                                                <img src="https://toppng.com/uploads/preview/app-icon-set-login-icon-comments-avatar-icon-11553436380yill0nchdm.png" alt="" class="media-object">
                                             </div>
 
                                             <div class="media-body">
@@ -40,7 +39,7 @@
 
                                         <div class="media">
                                             <div class="media-left">
-                                                <img src="{{ $user->avatar }}" alt="" class="media-object">
+                                                <img src="https://toppng.com/uploads/preview/app-icon-set-login-icon-comments-avatar-icon-11553436380yill0nchdm.png" alt="" class="media-object">
                                             </div>
 
                                             <div class="media-body">
@@ -52,8 +51,6 @@
                                 @endforeach
                             </ul>
                     @endif
-                @endforeach
-
 
                 </div>
             </div>

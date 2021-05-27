@@ -119,6 +119,6 @@ class UserController extends Controller
               'is_reset' => 1
               ]);
 
-        return view('home')->with('status','Password berhasil diubah');
+        return redirect('/home');
     }
 }

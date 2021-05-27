@@ -20,22 +20,17 @@ class ChatController extends Controller
     {
         // count how many message are unread from the selected user
         // $user_status = DB::select("select status from users where status =35")->dump();
-        $user_status = DB::table('users')
-        ->select('status')
-        ->where('id', '=', Auth::id())
-        // ->where('status', '=', 'panitia')
-        ->get();
-        $stat ="";
-        $users = DB::select("select users.id, users.name, users.avatar, users.email, count(is_read) as unread
-            from users LEFT  JOIN  messages ON users.id = messages.from and is_read = 0 and messages.to = " . Auth::id() . "
-            where users.id != " . Auth::id() . "
-            group by users.id, users.name, users.avatar, users.email");
-        $panitia = DB::select("select users.id, users.name, users.avatar, users.email, count(is_read) as unread
-            from users LEFT  JOIN  messages ON users.id = messages.from and is_read = 0 and messages.to = " . Auth::id() . "
-            where users.id != " . Auth::id() . " and status = 'panitia'
-            group by users.id, users.name, users.avatar, users.email");
 
-        return view('ask', ['users' => $users, 'status' => $user_status, 'panitia' => $panitia]);
+        $users = DB::select("select users.id, users.name, users.email, count(is_read) as unread
+            from users LEFT  JOIN  messages ON users.id = messages.from and is_read = 0 and messages.to = " . Auth::id() . "
+            where users.id != " . Auth::id() . " and status = 'maharu'
+            group by users.id, users.name, users.email");
+        $panitia = DB::select("select users.id, users.name, users.email, count(is_read) as unread
+            from users LEFT  JOIN  messages ON users.id = messages.from and is_read = 0 and messages.to = " . Auth::id() . "
+            where users.id != " . Auth::id() . " and name LIKE '%[ADMIN]%'
+            group by users.id, users.name, users.email");
+
+        return view('ask', ['users' => $users, 'panitia' => $panitia]);
 
     }
 
