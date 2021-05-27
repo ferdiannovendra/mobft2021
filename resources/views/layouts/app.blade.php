@@ -7,11 +7,11 @@
     <!-- CSRF Token -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
-    <title>{{ config('app.name', 'Laravel') }}</title>
+    <title>Home - MOB FT 21</title>
 
     <!-- Scripts -->
     <script src="{{ asset('js/app.js') }}" defer></script>
-
+    <link rel="shortcut icon" href="https://uls.ubaya.ac.id/pluginfile.php/1/theme_lambda/favicon/1619514455/favivon.png" />
     <!-- Fonts -->
     <link rel="dns-prefetch" href="//fonts.gstatic.com">
     <link href="https://fonts.googleapis.com/css?family=Nunito" rel="stylesheet">
@@ -163,7 +163,7 @@
         <nav class="navbar navbar-expand-md navbar-light bg-white shadow-sm">
             <div class="container">
                 <a class="navbar-brand" href="{{ url('/') }}">
-                    {{ config('app.name', 'Laravel') }}
+                    MOB FT 2021
                 </a>
                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="{{ __('Toggle navigation') }}">
                     <span class="navbar-toggler-icon"></span>
@@ -216,101 +216,6 @@
         </main>
     </div>
 
-<script src="https://js.pusher.com/5.0/pusher.min.js"></script>
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 
-<script>
-    var receiver_id = '';
-    var my_id = "{{ Auth::id() }}";
-    console.log("heyyyyyyyyyyyyyyy" + my_id);
-    $(document).ready(function () {
-        // ajax setup form csrf token
-        $.ajaxSetup({
-            headers: {
-                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-            }
-        });
-
-        // Enable pusher logging - don't include this in production
-        Pusher.logToConsole = true;
-
-        var pusher = new Pusher('9c9478affa188085106d', {
-            cluster: 'ap1',
-            forceTLS: true
-        });
-
-        var channel = pusher.subscribe('my-channel');
-        channel.bind('my-event', function (data) {
-            // alert(JSON.stringify(data));
-            if (my_id == data.from) {
-                $('#' + data.to).click();
-            } else if (my_id == data.to) {
-                if (receiver_id == data.from) {
-                    // if receiver is selected, reload the selected user ...
-                    $('#' + data.from).click();
-                } else {
-                    // if receiver is not seleted, add notification for that user
-                    var pending = parseInt($('#' + data.from).find('.pending').html());
-
-                    if (pending) {
-                        $('#' + data.from).find('.pending').html(pending + 1);
-                    } else {
-                        $('#' + data.from).append('<span class="pending">1</span>');
-                    }
-                }
-            }
-        });
-
-        $('.user').click(function () {
-            $('.user').removeClass('active');
-            $(this).addClass('active');
-            $(this).find('.pending').remove();
-
-            receiver_id = $(this).attr('id');
-            $.ajax({
-                type: "get",
-                url: "message/" + receiver_id, // need to create this route
-                data: "",
-                cache: false,
-                success: function (data) {
-                    $('#messages').html(data);
-                    scrollToBottomFunc();
-                }
-            });
-        });
-
-        $(document).on('keyup', '.input-text input', function (e) {
-            var message = $(this).val();
-
-            // check if enter key is pressed and message is not null also receiver is selected
-            if (e.keyCode == 13 && message != '' && receiver_id != '') {
-                $(this).val(''); // while pressed enter text box will be empty
-
-                var datastr = "receiver_id=" + receiver_id + "&message=" + message;
-                $.ajax({
-                    type: "post",
-                    url: "message", // need to create this post route
-                    data: datastr,
-                    cache: false,
-                    success: function (data) {
-
-                    },
-                    error: function (jqXHR, status, err) {
-                    },
-                    complete: function () {
-                        scrollToBottomFunc();
-                    }
-                })
-            }
-        });
-    });
-
-    // make a function to scroll down auto
-    function scrollToBottomFunc() {
-        $('.message-wrapper').animate({
-            scrollTop: $('.message-wrapper').get(0).scrollHeight
-        }, 50);
-    }
-</script>
 </body>
 </html>
