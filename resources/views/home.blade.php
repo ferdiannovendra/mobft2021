@@ -15,8 +15,7 @@
                     @endif
 
                     {{ __('You are logged in!') }}
-                    Home
-
+                    <br>
                     @foreach($data as $dat)
                     <br>
                     Nama Lengkap : {{ $dat->name }}
@@ -25,6 +24,16 @@
                     <br>
                     Divisi : {{ $dat->divisi }}
                     <br>
+                    Email : {{ $dat->email }}
+                    <br>
+                    Status : {{ $dat->status }}
+                    <hr>
+                    @if ($dat->divisi=="MAPING")
+                    Kelompok Alpha : {{ $dat->alpha }}
+                    <br>
+                    Kelompok Beta : {{ $dat->beta }}
+                    @endif
+
                     @endforeach
                 </div>
             </div>

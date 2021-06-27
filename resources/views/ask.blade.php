@@ -10,7 +10,7 @@
                     @if($stat->status == 'panitia')
                         <ul class="users">
                                 @foreach($users as $user)
-                                    <li class="user" id="{{ $user->id }}">
+                                    <li class="user" id="{{ $user->nrp }}">
                                         {{--will show unread count notification--}}
                                         @if($user->unread)
                                             <span class="pending">{{ $user->unread }}</span>
@@ -32,7 +32,7 @@
                     @else
                             <ul class="users">
                                 @foreach($panitia as $user)
-                                    <li class="user" id="{{ $user->id }}">
+                                    <li class="user" id="{{ $user->nrp }}">
                                         {{--will show unread count notification--}}
                                         @if($user->unread)
                                             <span class="pending">{{ $user->unread }}</span>

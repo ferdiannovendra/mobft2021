@@ -22,18 +22,18 @@ class ChatController extends Controller
         // $user_status = DB::select("select status from users where status =35")->dump();
         $user_status = DB::table('users')
         ->select('status')
-        ->where('id', '=', Auth::id())
+        ->where('nrp', '=', Auth::user()->nrp)
         // ->where('status', '=', 'panitia')
         ->get();
         $stat ="";
-        $users = DB::select("select users.id, users.name, users.avatar, users.email, count(is_read) as unread
-            from users LEFT  JOIN  messages ON users.id = messages.from and is_read = 0 and messages.to = " . Auth::id() . "
-            where users.id != " . Auth::id() . "
-            group by users.id, users.name, users.avatar, users.email");
-        $panitia = DB::select("select users.id, users.name, users.avatar, users.email, count(is_read) as unread
-            from users LEFT  JOIN  messages ON users.id = messages.from and is_read = 0 and messages.to = " . Auth::id() . "
-            where users.id != " . Auth::id() . " and status = 'panitia'
-            group by users.id, users.name, users.avatar, users.email");
+        $users = DB::select("select users.nrp, users.name, users.avatar, users.email, count(is_read) as unread
+            from users LEFT  JOIN  messages ON users.nrp = messages.from and is_read = 0 and messages.to = " . Auth::user()->nrp . "
+            where users.nrp != " . Auth::user()->nrp . "
+            group by users.nrp, users.name, users.avatar, users.email");
+        $panitia = DB::select("select users.nrp, users.name, users.avatar, users.email, count(is_read) as unread
+            from users LEFT  JOIN  messages ON users.nrp = messages.from and is_read = 0 and messages.to = " . Auth::user()->nrp . "
+            where users.nrp != " . Auth::user()->nrp . " and status = 'panitia'
+            group by users.nrp, users.name, users.avatar, users.email");
 
         return view('ask', ['users' => $users, 'status' => $user_status, 'panitia' => $panitia]);
 

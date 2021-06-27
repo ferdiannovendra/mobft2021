@@ -28,26 +28,16 @@ class HomeController extends Controller
     public function index()
     {
         $alldata = DB::table('users')->where('nrp',Auth::user()->nrp)->get();
-        return view('home',["data"=>$alldata]);
-    }
-    public function setpassword()
-    {
-        $nrp = Hash::make(Auth::user()->nrp);
-        $alldata = User::All();
-        foreach ($alldata as $key) {
-
-            $hashed = Hash::make($key->nrp);
-            $affected = DB::table('users')
-              ->where('nrp', $key->nrp)
-              ->update(['password' => $hashed]);
-        }
-
-        if ($affected) {
-            echo "sukses";
+        // echo $alldata;
+        $reset = DB::table('users')->select('is_reset')->where('nrp', Auth::user()->nrp)->get();
+        // echo $reset[0]->is_reset;
+        if($reset[0]->is_reset == 0){
+            return view('resetpassword');
         }else{
-            echo "gagal";
-
+            return view('home',["data"=>$alldata]);
         }
-        // return view('home')->with('status','Oke');
+        // return view('home',["data"=>$alldata]);
+        // return view('home',["data"=>$alldata]);
     }
+
 }
